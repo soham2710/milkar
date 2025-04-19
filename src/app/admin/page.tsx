@@ -1,10 +1,153 @@
 "use client";
 
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import { Download, Search, RefreshCw, Database, Mail, Eye, LogOut } from "lucide-react";
-import LeadDetailsModal from "@/components/admin/LeadDetailsModal";
 
-export default function AdminPage() {
+// Assuming you have this component
+interface FormEntry {
+  _id?: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  propertyType?: string;
+  propertySubType?: string;
+  location?: string[] | string;
+  purpose?: string;
+  budget?: string;
+  sizeRange?: string;
+  sizeUnit?: string;
+  bedrooms?: string;
+  timeline?: string;
+  amenities?: string[] | string;
+  message?: string;
+  createdAt?: string;
+}
+
+interface LeadDetailsModalProps {
+  entry: FormEntry;
+  onClose: () => void;
+}
+
+const LeadDetailsModal = ({ entry, onClose }: LeadDetailsModalProps) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-200">
+          <div className="flex justify-between items-center">
+            <h3 className="text-xl font-bold text-gray-900">Lead Details</h3>
+            <button 
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-500"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-sm font-medium text-gray-500 mb-2">Contact Information</h4>
+              <div className="space-y-3">
+                <div>
+                  <div className="text-sm text-gray-500">Name</div>
+                  <div className="font-medium">{entry.name || "Not provided"}</div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Email</div>
+                  <div className="font-medium">{entry.email || "Not provided"}</div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Phone</div>
+                  <div className="font-medium">{entry.phone || "Not provided"}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-sm font-medium text-gray-500 mb-2">Property Preferences</h4>
+              <div className="space-y-3">
+                <div>
+                  <div className="text-sm text-gray-500">Property Type</div>
+                  <div className="font-medium">
+                    {entry.propertyType ? entry.propertyType.charAt(0).toUpperCase() + entry.propertyType.slice(1) : "Not provided"}
+                    {entry.propertySubType ? ` - ${entry.propertySubType}` : ""}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Budget</div>
+                  <div className="font-medium">{entry.budget || "Not provided"}</div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Purpose</div>
+                  <div className="font-medium">{entry.purpose || "Not provided"}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-sm font-medium text-gray-500 mb-2">Location</h4>
+              <div className="font-medium">
+                {Array.isArray(entry.location) && entry.location.length > 0 
+                  ? entry.location.join(", ") 
+                  : entry.location 
+                    ? entry.location
+                    : "Not specified"
+                }
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-sm font-medium text-gray-500 mb-2">Size & Timeline</h4>
+              <div className="space-y-3">
+                <div>
+                  <div className="text-sm text-gray-500">Size</div>
+                  <div className="font-medium">
+                    {entry.sizeRange ? `${entry.sizeRange} ${entry.sizeUnit || ''}` : "Not provided"}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Bedrooms</div>
+                  <div className="font-medium">{entry.bedrooms || "Not provided"}</div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Timeline</div>
+                  <div className="font-medium">
+                    {entry.timeline ? entry.timeline.replace(/-/g, ' ') : "Not provided"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {entry.message && (
+            <div className="mt-6">
+              <h4 className="text-sm font-medium text-gray-500 mb-2">Additional Message</h4>
+              <div className="bg-gray-50 p-4 rounded-md">
+                <p className="text-gray-700">{entry.message}</p>
+              </div>
+            </div>
+          )}
+          
+          <div className="mt-6 text-sm text-gray-500">
+            Submitted on: {entry.createdAt ? new Date(entry.createdAt).toLocaleString() : "Unknown date"}
+          </div>
+        </div>
+        <div className="px-6 py-4 bg-gray-50 rounded-b-lg flex justify-end">
+          <button
+            onClick={onClose}
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function AdminDashboard() {
   // Authentication state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
@@ -13,6 +156,7 @@ export default function AdminPage() {
   
   // Leads management state
   interface FormEntry {
+    _id?: string;
     name?: string;
     email?: string;
     phone?: string;
@@ -23,7 +167,10 @@ export default function AdminPage() {
     budget?: string;
     sizeRange?: string;
     sizeUnit?: string;
+    bedrooms?: string;
     timeline?: string;
+    amenities?: string[] | string;
+    message?: string;
     createdAt?: string;
   }
 
@@ -51,10 +198,11 @@ export default function AdminPage() {
   }, []);
 
   // Login form handlers
-  const handleLoginChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginData(prev => ({ ...prev, [name]: value }));
   };
+  
 
   const handleLoginSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -103,23 +251,41 @@ export default function AdminPage() {
   const handleDownloadCsv = async () => {
     setIsCsvDownloading(true);
     try {
-      const response = await fetch("/api/export-csv");
+      // Log the URL we're trying to fetch (for debugging)
+      console.log("Fetching from:", "/api/export-csv");
+      
+      // Use the correct API endpoint with full path
+      const response = await fetch("/api/export-csv", {
+        // Add cache busting query parameter
+        headers: {
+          // Add a custom header that will pass through the referer check
+          'X-From-Admin': 'true'
+        },
+        // Explicitly set these fetch options
+        cache: 'no-store',
+        credentials: 'same-origin'
+      });
+      
+      console.log("Response status:", response.status);
+      
       if (!response.ok) {
-        throw new Error("Failed to download CSV");
+        throw new Error(`Failed to download CSV: ${response.status} ${response.statusText}`);
       }
       
       // Extract filename from Content-Disposition header if available
       const contentDisposition = response.headers.get("Content-Disposition");
       let filename = "milkar-leads.csv";
+      
       if (contentDisposition) {
         const filenameMatch = contentDisposition.match(/filename="(.+)"/);
-        if (filenameMatch) {
+        if (filenameMatch && filenameMatch[1]) {
           filename = filenameMatch[1];
         }
       }
       
       // Create a blob from the response
       const blob = await response.blob();
+      console.log("Blob size:", blob.size);
       
       // Create a link to download the blob
       const url = window.URL.createObjectURL(blob);
@@ -131,11 +297,17 @@ export default function AdminPage() {
       // Add to document, click it, and remove it
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      
+      // Clean up
+      window.setTimeout(() => {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 100);
+      
     } catch (error) {
       console.error("Error downloading CSV:", error);
-      alert("Failed to download CSV. Please try again.");
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      alert("Failed to download CSV. Please try again. Error: " + errorMessage);
     } finally {
       setIsCsvDownloading(false);
     }
@@ -177,7 +349,7 @@ export default function AdminPage() {
   // Show login if not authenticated
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="min-h-screen bg-gray-50 pt-20 py-12 px-4">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-orange-600">MILKAR</h1>
@@ -251,7 +423,7 @@ export default function AdminPage() {
 
   // Show dashboard if authenticated
   return (
-    <div className="min-h-screen bg-gray-50 py-6 px-4">
+    <div className="min-h-screen bg-gray-50 pt-20 py-6 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
@@ -353,7 +525,7 @@ export default function AdminPage() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredEntries.map((entry, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
+                    <tr key={entry._id || index} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-medium">
@@ -387,15 +559,23 @@ export default function AdminPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm font-medium text-gray-900">
-                          {entry.budget ? entry.budget.replace(/-/g, ' ').split(' ').map((word: string) => 
-                            word.charAt(0).toUpperCase() + word.slice(1)
-                          ).join(' ') : "Not specified"}
+                          {entry.budget 
+                            ? typeof entry.budget === 'string' 
+                              ? entry.budget.replace(/-/g, ' ').split(' ').map(word => 
+                                  word.charAt(0).toUpperCase() + word.slice(1)
+                                ).join(' ') 
+                              : entry.budget
+                            : "Not specified"}
                         </div>
                         <div className="text-sm text-gray-500">
                           {entry.sizeRange ? `Size: ${entry.sizeRange} ${entry.sizeUnit || ''}` : ""}
                         </div>
                         <div className="text-sm text-gray-500">
-                          {entry.timeline ? `Timeline: ${entry.timeline.replace(/-/g, ' ')}` : ""}
+                          {entry.timeline 
+                            ? typeof entry.timeline === 'string'
+                              ? `Timeline: ${entry.timeline.replace(/-/g, ' ')}`
+                              : `Timeline: ${entry.timeline}`
+                            : ""}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

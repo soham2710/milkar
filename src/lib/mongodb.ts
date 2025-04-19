@@ -1,40 +1,35 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, Db } from "mongodb";
 
-// Use your MongoDB Atlas connection string
-// In production, this should be set in environment variables for security
+// MongoDB connection URI from environment variable or fallback to default
 const uri = process.env.MONGODB_URI || "mongodb+srv://sohamnsharma:rdcv4c75@cluster0.lwlb7wz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-const options = {
-  // Additional options can be added here if needed
+// Options for MongoDB connection (could be expanded later)
+const options = {};
+
+// A Singleton pattern to ensure only one instance of MongoClient is used
+let client: MongoClient | null = null;
+let clientPromise: Promise<MongoClient> | null = null;
+
+// Connect to MongoDB
+const connectToDatabase = async (): Promise<{ db: Db; client: MongoClient }> => {
+  if (client) {
+    // If client is already connected, return it
+    return { db: client.db("milkar"), client };
+  }
+
+  if (!clientPromise) {
+    // Create a new client and store the promise of connecting to MongoDB
+    client = new MongoClient(uri, options);
+    clientPromise = client.connect();
+  }
+
+  // Wait for the client connection to be established
+  client = await clientPromise;
+  const db = client.db("milkar");
+
+  // Return the db and client instance
+  return { db, client };
 };
 
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
-// Global is used here to maintain a cached connection across hot reloads
-// in development. This prevents connections growing exponentially
-declare global {
-  var _mongoClientPromise: Promise<MongoClient> | undefined;
-}
-
-if (process.env.NODE_ENV === "development") {
-  // In development mode, use a global variable so that the value
-  // is preserved across module reloads caused by HMR
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    global._mongoClientPromise = client.connect();
-  }
-  clientPromise = global._mongoClientPromise;
-} else {
-  // In production mode, it's best to not use a global variable
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
-}
-
-// Export a module-scoped MongoClient promise
-// By doing this in a separate module, the client can be shared across functions
-export async function connectToDatabase() {
-  const client = await clientPromise;
-  const db = client.db("milkar"); // Specify the database name
-  return { db, client };
-}
+export { connectToDatabase };
+export type { Db, MongoClient };

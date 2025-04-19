@@ -462,7 +462,7 @@ export default function ContactForm() {
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-green-800">
-                Thank you for your interest! We'll contact you soon about your property requirements.
+                Thank you for your interest! We&apos;ll contact you soon about your property requirements.
               </p>
             </div>
           </div>
@@ -698,7 +698,7 @@ export default function ContactForm() {
           </motion.button>
           
           <p className="mt-4 text-xs text-center text-gray-500">
-            By submitting this form, you agree to join MILKAR's collective buying network and be contacted about property opportunities.
+            By submitting this form, you agree to join MILKAR&apos;s collective buying network and be contacted about property opportunities.
           </p>
         </form>
       )}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Phone, ChevronDown, Menu, X } from "lucide-react";
+import { Phone, Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -46,30 +46,6 @@ export default function Navbar() {
               >
                 Home
               </Link>
-              
-              <div className="relative group">
-                <button className={`flex items-center px-4 py-2 rounded-md transition-colors hover:bg-orange-50 hover:text-orange-600 ${
-                  pathname.startsWith("/properties") ? "text-orange-600 font-medium" : ""
-                }`}>
-                  Properties <ChevronDown className="ml-1 h-4 w-4" />
-                </button>
-                <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
-                  <div className="py-1">
-                    <Link href="/properties/plots" className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
-                      Plots & Land
-                    </Link>
-                    <Link href="/properties/apartments" className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
-                      Apartments & Flats
-                    </Link>
-                    <Link href="/properties/villas" className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
-                      Villas & Houses
-                    </Link>
-                    <Link href="/properties/commercial" className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
-                      Commercial
-                    </Link>
-                  </div>
-                </div>
-              </div>
               
               <Link 
                 href="/about" 
@@ -118,39 +94,6 @@ export default function Navbar() {
               Home
             </Link>
             
-            <div className="px-4 py-3 rounded-md">
-              <div className="font-medium mb-2">Properties</div>
-              <div className="pl-4 space-y-2">
-                <Link 
-                  href="/properties/plots" 
-                  className="block py-2 text-sm text-gray-700 hover:text-orange-600"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Plots & Land
-                </Link>
-                <Link 
-                  href="/properties/apartments" 
-                  className="block py-2 text-sm text-gray-700 hover:text-orange-600"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Apartments & Flats
-                </Link>
-                <Link 
-                  href="/properties/villas" 
-                  className="block py-2 text-sm text-gray-700 hover:text-orange-600"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Villas & Houses
-                </Link>
-                <Link 
-                  href="/properties/commercial" 
-                  className="block py-2 text-sm text-gray-700 hover:text-orange-600"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Commercial
-                </Link>
-              </div>
-            </div>
             
             <Link 
               href="/about" 

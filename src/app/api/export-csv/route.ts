@@ -3,13 +3,11 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { stringify } from "csv-stringify/sync";
 import { headers } from "next/headers";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    // Simple security check - can be enhanced with proper authentication
     const headersList = await headers();
     const referer = headersList.get("referer") || "";
     
-    // Check if request is coming from our own admin page
     if (!referer.includes("/admin")) {
       return NextResponse.json(
         { error: "Unauthorized access" },
@@ -17,10 +15,8 @@ export async function GET(request: Request) {
       );
     }
     
-    // Connect to MongoDB
     const { db } = await connectToDatabase();
     
-    // Get all form entries
     const entries = await db
       .collection("formEntries")
       .find({})
@@ -29,12 +25,11 @@ export async function GET(request: Request) {
     
     if (!entries || entries.length === 0) {
       return NextResponse.json(
-        { error: "No entries found" },
-        { status: 404 }
+        { message: "No entries found" },
+        { status: 200 }
       );
     }
     
-    // Format the entries for CSV
     const csvData = entries.map((entry) => ({
       Name: entry.name || "",
       Email: entry.email || "",
@@ -53,21 +48,21 @@ export async function GET(request: Request) {
       "Created At": entry.createdAt ? new Date(entry.createdAt).toLocaleString() : "",
     }));
     
-    // Convert to CSV string with proper handling of special characters
     const csvString = stringify(csvData, { 
       header: true,
       quoted: true,
       quoted_empty: true
     });
     
-    // Set headers for file download
-    const responseHeaders = new Headers();
-    responseHeaders.append("Content-Type", "text/csv; charset=utf-8");
-    responseHeaders.append("Content-Disposition", `attachment; filename="milkar-leads-${new Date().toISOString().split("T")[0]}.csv"`);
-    
     return new NextResponse(csvString, {
       status: 200,
-      headers: responseHeaders,
+      headers: {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": `attachment; filename="milkar-leads-${new Date().toISOString().split("T")[0]}.csv"`,
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
+      }
     });
   } catch (error) {
     console.error("Error generating CSV:", error);

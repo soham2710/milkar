@@ -21,13 +21,13 @@ export default function AboutPage() {
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold mb-6">Our Story</h2>
             <p className="text-lg text-gray-600 mb-4">
-              MILKAR (meaning "together" in Hindi) was founded on a simple observation: when people come together, they can achieve more than they could individually.
+              MILKAR (meaning &quot;together&quot; in Hindi) was founded on a simple observation: when people come together, they can achieve more than they could individually.
             </p>
             <p className="text-lg text-gray-600 mb-4">
               Our founder noticed that while individuals could only negotiate small discounts with real estate developers, groups could secure much better deals. This insight led to the creation of MILKAR - a platform that brings together buyers to leverage collective purchasing power.
             </p>
             <p className="text-lg text-gray-600">
-              Since our inception, we've helped hundreds of families in Indore secure their dream properties at significantly better prices than they could have negotiated individually.
+              Since our inception, we&apos;ve helped hundreds of families in Indore secure their dream properties at significantly better prices than they could have negotiated individually.
             </p>
           </div>
         </div>

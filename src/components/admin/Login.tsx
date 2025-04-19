@@ -99,7 +99,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
           </form>
           
           <div className="mt-6 text-center text-xs text-gray-500">
-            <p>For demo: username "admin", password "password"</p>
+            <p>For demo: username &quot;admin&quot;, password &quot;password&quot;</p>
           </div>
         </div>
         

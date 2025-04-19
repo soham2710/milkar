@@ -2,29 +2,46 @@
 
 import { X, Mail, Phone, MapPin, Home, Calendar, DollarSign, Users } from "lucide-react";
 
-// Define the properties for the modal component
+// Define a strong type for the lead entry
+interface LeadEntry {
+  name?: string;
+  email?: string;
+  phone?: string;
+  createdAt?: string;
+  propertyType?: string;
+  propertySubType?: string;
+  location?: string[] | string;
+  budget?: string;
+  timeline?: string;
+  purpose?: string;
+  sizeRange?: string;
+  sizeUnit?: string;
+  bedrooms?: number;
+  message?: string;
+  amenities?: string[];
+}
+
+// Use the interface in the props
 interface LeadDetailsModalProps {
-  entry: {
-    amenities?: string[]; // Define amenities as an optional array of strings
-    [key: string]: any;   // Keep other properties flexible
-  };
+  entry: LeadEntry;
   onClose: () => void;
 }
 
+
 export default function LeadDetailsModal({ entry, onClose }: LeadDetailsModalProps) {
   // Format dates for better display
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString?: string) => {
     if (!dateString) return "N/A";
     return new Date(dateString).toLocaleString();
   };
 
   // Format property types
-  const formatPropertyType = (type: string) => {
-    if (!type) return "N/A";
-    return type.replace(/-/g, ' ').split('_').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ');
-  };
+  const formatPropertyType = (type?: string) => {
+      if (!type) return "N/A";
+      return type.replace(/-/g, ' ').split('_').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' ');
+    };
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">

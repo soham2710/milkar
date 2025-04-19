@@ -2,14 +2,11 @@ import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { headers } from "next/headers";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    // Simple security check - can be enhanced with proper authentication
-    // This is just a basic example to prevent direct API access
     const headersList = await headers();
     const referer = headersList.get("referer") || "";
     
-    // Check if request is coming from our own admin page
     if (!referer.includes("/admin")) {
       return NextResponse.json(
         { error: "Unauthorized access" },
@@ -17,10 +14,8 @@ export async function GET(request: Request) {
       );
     }
     
-    // Connect to MongoDB
     const { db } = await connectToDatabase();
     
-    // Get all form entries, sorted by newest first
     const entries = await db
       .collection("formEntries")
       .find({})

@@ -10,7 +10,6 @@ import {
   ChevronRight, 
   LogOut,
   Calendar,
-  Clock,
   Filter,
   AlertTriangle
 } from "lucide-react";

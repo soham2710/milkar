@@ -671,7 +671,12 @@ export default function Home() {
                           Preferred Locations in Indore
                         </label>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                          {['Vijay Nagar', 'Bypass Road', 'MR 10', 'AB Road', 'Scheme 78', 'Nipania'].map((loc) => (
+                          {["Vijay Nagar", "Scheme 78", "Scheme 54", "AB Road", "MG Road", 
+    "Saket Nagar", "Annapurna Road", "Rajendra Nagar", "Geeta Bhawan", 
+    "Palasia", "New Palasia", "LIG Colony", "MIG Colony", "Scheme 140", 
+    "Sapna Sangeeta", "Bapat Square", "Ring Road", "Khandwa Road", 
+    "Rau", "Dewas Nagar", "Bombay Hospital Area", "Bypass Road", "Bhawarkuan",
+    "Sudama Nagar", "Silicon City"].map((loc) => (
                             <div key={loc} className="flex items-center">
                               <input
                                 id={`loc-${loc}`}

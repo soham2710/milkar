@@ -135,10 +135,10 @@ export default function ContactPage() {
                       <div>
                         <h4 className="text-lg font-bold text-gray-900 mb-1">Call Us</h4>
                         <p className="text-gray-600 mb-1">Main Office:</p>
-                        <a href="tel:+919876543210" className="text-orange-600 hover:underline">+91 9876 543210</a>
+                        <a href="tel:+919876543210" className="text-orange-600 hover:underline">+91 98931 11536</a>
                         
                         <p className="text-gray-600 mt-3 mb-1">Customer Support:</p>
-                        <a href="tel:+919876543211" className="text-orange-600 hover:underline">+91 9876 543211</a>
+                        <a href="tel:+919876543211" className="text-orange-600 hover:underline">+91 98931 11536</a>
                         <p className="text-sm text-gray-500 mt-1">Monday to Saturday, 10:00 AM - 6:00 PM</p>
                       </div>
                     </motion.div>

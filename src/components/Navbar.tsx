@@ -68,7 +68,7 @@ export default function Navbar() {
               className="ml-6 flex items-center bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition-colors"
             >
               <Phone className="h-4 w-4 mr-2" />
-              <span>+91 9876543210</span>
+              <span>+91-9893111536</span>
             </a>
           </div>
           
@@ -112,7 +112,7 @@ export default function Navbar() {
             </Link>
             
             <a 
-              href="tel:+919876543210" 
+              href="tel:+91-9893111536" 
               className="flex items-center bg-orange-600 text-white px-4 py-3 rounded-md hover:bg-orange-700 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >

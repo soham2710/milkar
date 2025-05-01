@@ -138,7 +138,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className={`transition-all duration-1000 delay-300 ${fadeIn}`}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                <span className="text-orange-600">MILKAR</span> - Power in <br/>Collective Buying
+                <span className="text-orange-600">MILKAR</span> - Buy Together <br/>Save Together
               </h1>
               <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-xl">
                 Get up to 20% better deals on real estate through our collective purchasing power in Indore. Join hundreds of satisfied property buyers today.
